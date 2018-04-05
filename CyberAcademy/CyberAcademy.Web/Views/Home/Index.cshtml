@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+@section styles{
+    <style>
+        #box {
+            margin: 0px;
+            display: inline;
+            padding: 200px;
+        }
+    </style>
+
+}
+
+<h1>@Html.Action("SomePage")</h1>
+<div id="box" style="@ViewBag.Styles">
+    @if (true)
+    {
+        <img src="@ViewBag.Female" alt="profile" />
+    }
+    else
+    {
+        <img src="@ViewBag.Male" alt="profile" />
+    }
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        @*(function () {
+
+            alert('@ViewBag.Styles');
+
+        })();*@
+    </script>
+
+
+}
+
