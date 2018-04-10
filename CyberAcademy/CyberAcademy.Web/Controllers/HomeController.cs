@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CyberAcademy.Web.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,12 +7,26 @@ using System.Web.Mvc;
 
 namespace CyberAcademy.Web.Controllers
 {
+
     public class HomeController : Controller
     {
-        [ChildActionOnly]
-        public ActionResult SomePage()
+        [HttpPost]
+        public ActionResult GetSearchForm(SearchModel model)
         {
-            return PartialView();
+            TempData["Keyword"] = model;
+            return RedirectToAction("SearchForm");
+        }
+
+        [HttpGet]
+        public ActionResult SearchForm()
+        {
+            if (TempData["Keyword"] == null)
+                return View();
+
+            var word = (SearchModel)TempData["Keyword"];
+            var checkText = word.RememberMe ? "Checked" : "Not Checked";
+            ViewData["Keyword"] = $"{word.Keyword} & Remember Me: {checkText}";
+            return View();
         }
         // GET: Home
         public ActionResult Index()
