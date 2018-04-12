@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CyberAcademy.Web.Logics;
+using CyberAcademy.Web.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,21 +10,23 @@ namespace CyberAcademy.Web.Controllers
 {
     public class HomeController : Controller
     {
-        [ChildActionOnly]
-        public ActionResult SomePage()
+        private readonly ContactManager _contactMgr;
+
+        public HomeController()
         {
-            return PartialView();
+            _contactMgr = new ContactManager();
+        }
+
+        public string GetDate()
+        {
+            return DateTime.Now.ToLongDateString();
         }
         // GET: Home
         public ActionResult Index()
         {
-            this.ViewData["Male"] = Url.Content("~/images/profile.png");
-
-            this.ViewData["Female"] = Url.Content("~/images/profile2.png");
-
-            this.ViewBag.Styles = "border: 1px solid green;";
+            ViewData["SalesAnalyticsCaptions"] = "Sales Analytics";
+            ViewBag.Contacts = _contactMgr.GetContacts();
             return View();
         }
-
     }
 }
