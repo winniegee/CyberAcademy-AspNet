@@ -14,6 +14,7 @@ namespace CyberAcademy.Web
         {
             var option = new CookieAuthenticationOptions()
             {
+                AuthenticationType = "ApplicationCookie",
                 CookieName = "CyberAcademy",
                 LoginPath = new PathString("/Auth/Login")
             };
