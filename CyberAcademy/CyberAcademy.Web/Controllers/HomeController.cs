@@ -1,5 +1,4 @@
-﻿using CyberAcademy.Web.Logics;
-using CyberAcademy.Web.Models;
+﻿using CyberAcademy.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +8,12 @@ using System.Web.Mvc;
 
 namespace CyberAcademy.Web.Controllers
 {
+    [Authorize(Roles = "ADMIN, STAFF")]
     public class HomeController : Controller
     {
-        private readonly ContactManager _contactMgr;
 
         public HomeController()
         {
-            _contactMgr = new ContactManager();
         }
 
         public string GetDate()
@@ -31,7 +29,6 @@ namespace CyberAcademy.Web.Controllers
 
             ViewBag.ProfileUrl = claim.Value;
             ViewData["SalesAnalyticsCaptions"] = "Sales Analytics";
-            ViewBag.Contacts = _contactMgr.GetContacts();
             return View();
         }
     }

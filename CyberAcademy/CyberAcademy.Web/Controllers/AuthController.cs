@@ -1,4 +1,5 @@
 ﻿using CyberAcademy.Web.Models;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,12 @@ namespace CyberAcademy.Web.Controllers
     [AllowAnonymous]
     public class AuthController : Controller
     {
+        private UserManager<Contact> _userManager;
+        public AuthController()
+        {
+            _userManager = Startup.UserManagerFactory.Invoke();
+        }
+
         [HttpGet]
         public ActionResult Register()
         {
@@ -29,19 +36,13 @@ namespace CyberAcademy.Web.Controllers
         [HttpPost]
         public ActionResult Login(LoginInfo data)
         {
-            string username = "admin@cyberspace.com";
-            string password = "admin";
-
-
             if (this.ModelState.IsValid)
             {
-                if (username.Equals(data.Username) && password.Equals(data.Password))
+                var contact = _userManager.Find(data.Username, data.Password);
+                if (contact != null)
                 {
-                    ClaimsIdentity claimsIdentity = 
-                        new ClaimsIdentity("ApplicationCookie");
-                    claimsIdentity.AddClaim(new Claim(ClaimTypes.Name, data.Username));
+                    ClaimsIdentity claimsIdentity = _userManager.CreateIdentity(contact, "ApplicationCookie");
                     claimsIdentity.AddClaim(new Claim("PassportUrl", Url.Content("~/images/profile.png")));
-
 
                     var ctxt = this.Request.GetOwinContext();
                     ctxt.Authentication.SignIn(claimsIdentity);
